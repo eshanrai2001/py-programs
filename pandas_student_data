@@ -1,0 +1,83 @@
+import pandas as pd
+
+dict1 ={'Name':['Priyang','Aadhya','Krisha','Vedant','Parshv',
+                'Mittal','Archana'],
+                'Marks':[98,89,99,87,90,83,99],
+                'Gender':['Male','Female','Female','Male','Male',
+                         'Female','Female']}
+
+df1 = pd.DataFrame(dict1)
+print(df1)
+
+#display 3 top rows of the dataset
+df1.head(3)
+
+#check last 3 rows of the dataset
+df1.tail(3)
+
+#find shape of our dataset(number of rows and number of columns)
+print(df1.shape) #shape is not a method, just a attribute
+print("no. of rows: " ,df1.shape[0])
+print("no. of columns: " ,df1.shape[1])
+
+#get information about dataset like total number of rows,columns,datatype and memory requirement
+df1.info()
+
+#check null values in the dataset
+df1.isnull().sum(axis = 0) #column wise
+df1.isnull().sum(axis = 1) #row wise
+
+#Get overall statistics of the dataframe
+df1.describe(include = "all")
+
+#find unique values from the gender column
+df1["Gender"].unique()
+
+#Display count of unique values from teh gender column
+df1["Gender"].nunique()
+
+#display count of unique values in the dataframe
+df1["Gender"].value_counts()
+
+#find the total number of students having marks having marks between 90 and 100
+len(df1[(df1["Marks"]>=90) & (df1["Marks"]<=100)])
+sum(df1["Marks"].between(90,100)) # by default it includes the values
+
+#display average,min,max marks
+df1["Marks"].mean()
+df1["Marks"].max()
+df1["Marks"].min()
+
+#Apply method
+def marks(x):
+  return x/2
+df1["half marks"]= df1["Marks"].apply(marks) #df1["half marks"] = df1["Marks"].apply(lambda x:x/2) or df1["Name"].apply(len)
+print(df1)
+
+#use map function to convert male to 1 and female to 0
+df1["convert"] = df1["Gender"].map({"Male":1,"Female":0})
+df1["convert"]
+
+#Drop the column
+#df1.drop("half marks",axis = 1,inplace = True)
+#for multiple columns
+df1.drop(["Gender","convert"],axis = 1,inplace = True)
+df1
+
+#print name of columns
+df1.columns # attribute and not method
+df1.index #row indexes
+
+#sort the dataframe as per the marks column
+dict2 ={'Name':['Priyang','Aadhya','Krisha','Vedant','Parshv',
+                'Mittal','Archana'],
+                'Marks':[98,89,99,87,90,83,99],
+                'Gender':['Male','Female','Female','Male','Male',
+                         'Female','Female']}
+df2=pd.DataFrame(dict2)
+df2
+df2.sort_values(by="Marks",ascending=False)
+
+#display name and marks of female students only
+df2[df2["Gender"] == "Female"][["Marks","Name"]] 
+df2[df2["Gender"].isin(["Female"])][["Marks","Name"]]
