@@ -1,0 +1,73 @@
+#data available at kaggle: https://www.kaggle.com/datasets/utkarsharya/ecommerce-purchases
+
+import pandas as pd
+
+data = pd.read_csv("Ecommerce Purchases")
+data
+
+#Display Top 10 Rows of The Dataset
+data.head(10)
+
+#Display last  10 Rows of The Dataset
+data.tail(10)
+
+#Check Datatype of Each Column
+data.dtypes
+
+#Check null values in the dataset
+data.isnull().sum()
+
+#How many rows and columns are there in our Dataset? 
+len(data.columns)
+len(data)
+data.info()
+
+#Highest and lowest purchase prices
+data["Purchase Price"].max()
+data["Purchase Price"].min()
+
+#Average Purchase price
+data["Purchase Price"].mean()
+
+#How many people have French 'fr' as their Language?
+data.columns
+
+len(data[data["Language"] == "fr"]) 
+#or data[data["Language"] == "fr"].count()
+
+#Job Title Contains Engineer
+len(data[data["Job"].str.contains("engineer",case=False)])
+
+#Find The Email of the person with the following IP Address: 132.207.160.22
+data[data["IP Address"] == "132.207.160.22"]["Email"]
+
+#How many People have Mastercard as their Credit Card Provider and made a purchase above 50?
+len(data[(data["CC Provider"] == "Mastercard")   & (data["Purchase Price"]>50)])
+
+#Find the email of the person with the following Credit Card Number: 4664825258997302
+data[data["Credit Card"] == 4664825258997302]["Email"]
+
+# How many people purchase during the AM and how many people purchase during PM?
+data["AM or PM"].value_counts()
+
+#How many people have a credit card that expires in 2020?
+def fun():
+  count = 0
+  for i in data["CC Exp Date"]:
+   if i.split("/")[1] == "20":
+    count +=1
+  print(count)
+
+fun()
+
+len(data[data["CC Exp Date"].apply(lambda x:x[3:]=="20")])
+
+#What are the top 5 most popular email providers (e.g. gmail.com, yahoo.com, etc...) 
+list = []
+for i in data["Email"]:
+  list.append(i.split("@")[1])
+
+data["temp"]= list
+data["temp"].value_counts().head()
+
+data["Email"].apply(lambda x:x.split("@")[1]).value_counts().head()
